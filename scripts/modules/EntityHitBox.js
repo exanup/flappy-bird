@@ -1,15 +1,11 @@
 export default class EntityHitBox {
-  constructor({
-    parent = null,
-    scale = 0.8,
-  }) {
-
-    if (parent === null) {
+  constructor(props) {
+    if (props.parent === null) {
       throw Error("Need the parent to have a hitbox");
     }
 
-    this.parent = parent;
-    this.scale = scale;
+    this.parent = props.parent;
+    this.scale = props.scale || 0.8;
 
     this.width = Math.round(this.scale * this.parent.width);
     this.height = Math.round(this.scale * this.parent.height);
@@ -30,6 +26,5 @@ export default class EntityHitBox {
     ctx.strokeRect(this.x, this.y, this.width, this.height);
     ctx.closePath();
     ctx.restore();
-    console.log(this.x, this.y, this.width, this.height);
   }
 }
