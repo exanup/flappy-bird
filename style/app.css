@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #272b30;
+}
+
+.canvas-wrapper {
+  background: white;
+  width: 450px;
+  height: 600px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
