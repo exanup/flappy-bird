@@ -1,5 +1,6 @@
 import EntityHitBox from "./EntityHitBox.js";
 import Sprite from "./Sprite.js";
+import EventHandlerInstance from "./EventHandler.js";
 
 export default class Bird {
   constructor(props) {
@@ -11,6 +12,9 @@ export default class Bird {
     this.y = props.y || 0;
     this.dx = props.dx || 0;
     this.dy = props.dy || 0;
+    this.ddy = props.ddy || 0; // this is change in dy, ie. vertical acceleration
+
+    this.state = Bird.states.FLYING_DOWN;
 
     this.sprite = new Sprite({
       src: "../../assets/bird.png",
@@ -19,7 +23,7 @@ export default class Bird {
       isLoaded: false,
       currentFrame: 0,
       totalFrames: 4,
-      frameDelay: 100,
+      frameDelay: 50,
     });
 
     this.hitBox = new EntityHitBox({
@@ -30,12 +34,17 @@ export default class Bird {
   draw(ctx) {
     if (this.sprite.isLoaded) {
       // console.log("we are inside");
+      var angleRads = Math.atan2(this.dy, 5);
+
+      ctx.save();
+      ctx.translate(this.x + 0.5 * this.width, this.y + 0.5 * this.height);
+      ctx.rotate(angleRads);
       ctx.drawImage(this.sprite.$el,
         this.sprite.x, this.sprite.y,
-        this.sprite.width, this.sprite.height,
-        this.x, this.y,
+        this.sprite.width, this.sprite.height, -0.5 * this.width, -0.5 * this.height,
         this.width, this.height
       );
+      ctx.restore();
     }
     // this.hitBox.show(ctx);
   }
@@ -46,7 +55,36 @@ export default class Bird {
   }
 
   move() {
-    // this.x += this.dx; // the bird doesn't move sideways!
-    this.y += this.dy;
+    if (this.dy <= Bird.dyMAX && this.dy >= Bird.dyMIN) {
+      this.dy += this.ddy;
+    }
+    if (this.y + this.dy <= 564 && this.y + this.dy >= 0) {
+      this.y += this.dy;
+    }
+  }
+
+  flyUpwards() {
+    if (this.state === Bird.states.FLYING_UP) {
+      this.dy = -10;
+      this.ddy = 0.7;
+      this.state = Bird.states.FLYING_DOWN;
+    }
+  }
+
+  handleInputs() {
+    if (EventHandlerInstance.spacePressed) {
+      EventHandlerInstance.spacePressed = false;
+      this.state = Bird.states.FLYING_UP;
+      this.flyUpwards();
+    }
   }
 }
+
+Bird.states = {
+  FLYING_UP: 0,
+  FLYING_DOWN: 1,
+  FAINTED: 2,
+};
+
+Bird.dyMAX = 10;
+Bird.dyMIN = -10;

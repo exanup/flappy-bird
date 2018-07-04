@@ -1,3 +1,4 @@
+import EventHandlerInstance from "./modules/EventHandler.js";
 import Bird from "./modules/Bird.js";
 
 let canvas = document.getElementById("gameCanvas");
@@ -6,19 +7,35 @@ let ctx = canvas.getContext("2d", {
 });
 
 let bird = new Bird({
-  x: 10,
-  y: 10,
-  width: 34,
-  height: 24,
+  x: canvas.width / 3,
+  y: canvas.width / 2,
+  width: 51,
+  height: 36,
 });
 
-let raf = undefined;
-const animate = function() {
-  raf = requestAnimationFrame(animate);
+animate();
+
+function animate() {
+  requestAnimationFrame(animate);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   bird.draw(ctx);
   bird.update();
-};
-animate();
+  bird.handleInputs();
+}
+
+document.addEventListener("keydown", handleKeyDown, false);
+document.addEventListener("keyup", handleKeyUp, false);
+
+function handleKeyDown(e) {
+  if (e.keyCode === 32) {
+    EventHandlerInstance.spacePressed = true;
+  }
+}
+
+function handleKeyUp(e) {
+  if (e.keyCode === 32) {
+    EventHandlerInstance.spacePressed = false;
+  }
+}
 
 // console.log(bird);
