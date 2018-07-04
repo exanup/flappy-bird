@@ -4,7 +4,7 @@ import Bird from "./Bird.js";
 export default class Game {
   constructor(props) {
     if (typeof props.$container === "undefined") {
-      throw Error("Game needs a container!")
+      throw Error("Game needs a container!");
     }
 
     this.$container = props.$container;
@@ -18,7 +18,7 @@ export default class Game {
     this.$container.appendChild(this.$canvas);
 
     this.ctx = this.$canvas.getContext("2d", {
-      alpha: false,
+      alpha: true,
     });
 
     this.eventHandler = new EventHandler();

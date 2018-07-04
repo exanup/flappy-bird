@@ -16,13 +16,13 @@ export default class Bird {
     this.state = Bird.states.FLYING_DOWN;
 
     this.sprite = new Sprite({
-      src: "../../assets/bird.png",
+      src: "./assets/bird.png",
       width: 34,
       height: 24,
       isLoaded: false,
       currentFrame: 0,
       totalFrames: 4,
-      frameDelay: 50,
+      frameDelay: 40,
     });
 
     this.hitBox = new EntityHitBox({

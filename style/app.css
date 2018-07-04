@@ -9,6 +9,7 @@ body {
 
 .game-canvas {
   display: block;
+  background: #70c5ce;
   width: 450px;
   height: 600px;
   margin: 0 auto;

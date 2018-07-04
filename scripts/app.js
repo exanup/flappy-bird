@@ -4,3 +4,4 @@ let game = new Game({
   $container: document.getElementById("mainContainer"),
 });
 
+console.log(game);
