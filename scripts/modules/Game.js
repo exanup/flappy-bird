@@ -13,6 +13,7 @@ export default class Game {
 
     this.$canvas = document.createElement("canvas");
     this.$canvas.className = "game-canvas";
+    this.$canvas.style.backgroundColor = "#70c5ce";
     this.$canvas.width = this.width;
     this.$canvas.height = this.height;
     this.$container.appendChild(this.$canvas);
