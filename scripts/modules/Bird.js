@@ -1,6 +1,5 @@
 import EntityHitBox from "./EntityHitBox.js";
 import Sprite from "./Sprite.js";
-import EventHandlerInstance from "./EventHandler.js";
 
 export default class Bird {
   constructor(props) {
@@ -72,8 +71,8 @@ export default class Bird {
   }
 
   handleInputs() {
-    if (EventHandlerInstance.spacePressed) {
-      EventHandlerInstance.spacePressed = false;
+    if (this.parent.eventHandler.spacePressed) {
+      this.parent.eventHandler.spacePressed = false;
       this.state = Bird.states.FLYING_UP;
       this.flyUpwards();
     }

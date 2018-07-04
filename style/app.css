@@ -7,8 +7,8 @@ body {
   background: #272b30;
 }
 
-.canvas-wrapper {
-  background: white;
+.game-canvas {
+  display: block;
   width: 450px;
   height: 600px;
   margin: 0 auto;
