@@ -15,8 +15,12 @@ export default class Sprite {
 
     function handleSpriteLoad() {
       this.isLoaded = true;
-      // console.log("'this' in current context is ", this);
     }
+  }
+
+
+  get isAnimated() {
+    return (this.totalFrames > 0);
   }
 
   get x() {
@@ -28,15 +32,16 @@ export default class Sprite {
   }
 
   update() {
-    const now = Date.now();
-    if (this.lastFrameUpdated === undefined ||
-      now - this.lastFrameUpdated > this.frameDelay) {
-      this.currentFrame++;
-      if (this.currentFrame >= this.totalFrames) {
-        this.currentFrame = 0;
+    if (this.isAnimated) {
+      const now = Date.now();
+      if (this.lastFrameUpdated === undefined ||
+        now - this.lastFrameUpdated > this.frameDelay) {
+        this.currentFrame++;
+        if (this.currentFrame >= this.totalFrames) {
+          this.currentFrame = 0;
+        }
+        this.lastFrameUpdated = now;
       }
-      this.lastFrameUpdated = now;
     }
   }
-
 }

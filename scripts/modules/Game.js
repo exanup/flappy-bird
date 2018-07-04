@@ -1,5 +1,7 @@
 import EventHandler from "./EventHandler.js";
 import Bird from "./Bird.js";
+import Pipe from "./Pipe.js";
+import Background from "./Background.js";
 
 export default class Game {
   constructor(props) {
@@ -13,10 +15,13 @@ export default class Game {
 
     this.$canvas = document.createElement("canvas");
     this.$canvas.className = "game-canvas";
-    this.$canvas.style.backgroundColor = "#70c5ce";
+    this.$canvas.style.backgroundColor = "#4ec0ca";
     this.$canvas.width = this.width;
     this.$canvas.height = this.height;
     this.$container.appendChild(this.$canvas);
+    this.pipes = [];
+    this.pipeScore = 0;
+    this.lastPipeGeneratedAt = undefined;
 
     this.ctx = this.$canvas.getContext("2d", {
       alpha: true,
@@ -32,15 +37,80 @@ export default class Game {
       height: 36,
     });
 
+    this.background = new Background({
+      parent: this,
+    });
+
     this.registerEventHandlers();
     this.animate();
   }
+
   animate() {
     requestAnimationFrame(this.animate.bind(this));
     // setTimeout(this.animate.bind(this), 16);
     this.ctx.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
-    this.bird.draw(this.ctx);
+    this.draw(this.ctx);
+    this.update();
+    this.handleInputs();
+  }
+
+  draw(ctx) {
+    this.background.drawSky(ctx);
+    this.drawPipes(ctx);
+    this.bird.draw(ctx);
+    this.background.drawLand(ctx);
+  }
+
+  drawPipes(ctx) {
+    this.pipes.forEach(pipe => {
+      pipe.draw(ctx);
+    });
+  }
+
+  update() {
+    this.updatePipes();
     this.bird.update();
+  }
+
+  updatePipes() {
+    // update all pipes
+    this.pipes.forEach(pipe => {
+      pipe.update();
+    });
+    // check for collision for pipe and set game over
+
+    // check for oldest pipe going out of bound and remove it from queue
+
+    // check if a new random pipe is needed to be generated
+    if (this.lastPipeGeneratedAt === undefined ||
+      (this.pipeScore - this.lastPipeGeneratedAt) >= this.pipeInterval) {
+      this.lastPipeGeneratedAt = this.pipeScore;
+      // generate new pipes
+      // one at the top and another at the bottom
+      // with the gap between them
+      let rndY = this.getRandomY();
+      let pipeUpper = new Pipe({
+        parent: this,
+        x: this.$canvas.width,
+        y: rndY,
+      });
+      this.pipes.push(pipeUpper);
+
+      let pipeLower = new Pipe({
+        parent: this,
+        isFlipped: true,
+        x: this.$canvas.width,
+        y: pipeUpper.y + Pipe.height + Pipe.gap,
+      });
+      this.pipes.push(pipeLower);
+      // console.log("created 2 new pipes");
+    }
+
+    // increment lastPipe
+    this.pipeScore++;
+  }
+
+  handleInputs() {
     this.bird.handleInputs();
   }
 
@@ -61,4 +131,19 @@ export default class Game {
     }
   }
 
+  getRandomY() {
+    let availableHeight = this.$canvas.height - Background.land.height;
+    let rnd = Math.random();
+    let max = 0;
+    let min = availableHeight - Pipe.gap - 2 * Pipe.height;
+
+    let rndHeight = Math.round(rnd * (max - min) + min);
+    return rndHeight;
+  }
+
+  get pipeInterval() {
+    return Game.pipeInterval;
+  }
 }
+
+Game.pipeInterval = 240 / Pipe.dx;

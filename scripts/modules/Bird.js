@@ -11,7 +11,7 @@ export default class Bird {
     this.y = props.y || 0;
     this.dx = props.dx || 0;
     this.dy = props.dy || 0;
-    this.ddy = props.ddy || 0; // this is change in dy, ie. vertical acceleration
+    this.ddy = props.ddy || 0.7; // this is change in dy, ie. vertical acceleration
 
     this.state = Bird.states.FLYING_DOWN;
 
@@ -45,7 +45,7 @@ export default class Bird {
       );
       ctx.restore();
     }
-    // this.hitBox.show(ctx);
+    this.hitBox.show(ctx);
   }
 
   update() {
@@ -54,6 +54,7 @@ export default class Bird {
   }
 
   move() {
+    // need to remove these boundary checks
     if (this.dy <= Bird.dyMAX && this.dy >= Bird.dyMIN) {
       this.dy += this.ddy;
     }
@@ -65,7 +66,6 @@ export default class Bird {
   flyUpwards() {
     if (this.state === Bird.states.FLYING_UP) {
       this.dy = -10;
-      this.ddy = 0.7;
       this.state = Bird.states.FLYING_DOWN;
     }
   }
