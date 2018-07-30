@@ -1,3 +1,4 @@
 .jshintrc*
 .eslintrc*
 assets/bak/
+node_modules/

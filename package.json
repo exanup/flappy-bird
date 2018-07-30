@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/exanup/flappy-bird/issues"
   },
-  "homepage": "https://github.com/exanup/flappy-bird#readme"
+  "homepage": "https://github.com/exanup/flappy-bird#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.2.0"
+  }
 }
