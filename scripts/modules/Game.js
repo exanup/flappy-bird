@@ -46,7 +46,7 @@ export default class Game {
   }
 
   animate() {
-    requestAnimationFrame(this.animate.bind(this));
+    setTimeout(this.animate.bind(this), 16);
     // setTimeout(this.animate.bind(this), 16);
     this.ctx.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
     this.draw(this.ctx);
